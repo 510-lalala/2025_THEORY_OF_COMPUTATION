@@ -1,8 +1,8 @@
 import yfinance as yf
 import re
-import twstock  # <--- 匯入新套件
+import twstock  
 
-# 原本的常用清單 (保留著當作快速快取)
+# 常用清單 (保留著當作快速快取)
 STOCK_MAP = {
     "台積電": "2330.TW", "鴻海": "2317.TW", "聯發科": "2454.TW",
     "中華電": "2412.TW", "富邦金": "2881.TW", "國泰金": "2882.TW",
@@ -15,12 +15,12 @@ def search_stock_code(keyword):
     """
     功能：利用 twstock 套件去搜尋所有台股，找出代碼
     """
-    # 1. 如果是原本清單裡有的，直接回傳 (最快)
+    # 1. 如果是清單裡有的，直接回傳
     for name, code in STOCK_MAP.items():
         if name in keyword:
             return code, name
 
-    # 2. 如果清單沒有，使用 twstock 搜尋 (這就是你要的自動搜尋功能！)
+    # 2. 如果清單沒有，使用 twstock 搜尋
     try:
         # twstock.codes 裡面有全台股的資料
         for code in twstock.codes:
@@ -43,10 +43,11 @@ def search_stock_code(keyword):
     return None, None
 
 def get_stock_price(symbol_code):
-    """抓取股價 (這部分不變)"""
+    """抓取股價"""
     try:
         stock = yf.Ticker(symbol_code)
         df = stock.history(period="6mo")
         if df.empty: return None
         return df['Close']
+
     except: return None
