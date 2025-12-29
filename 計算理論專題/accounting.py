@@ -34,8 +34,6 @@ def write_to_gsheet(item, amount, category="其他雜項"):
         return "❌ 找不到 credentials.json"
     except Exception as e:
         return f"❌ Google Sheet 錯誤: {str(e)}"
-    
-# === 請將這段程式碼加在 accounting.py 的最下方 ===
 
 def calculate_category_totals():
     """統計各分類的總金額，並回傳統計結果 (字典)"""
@@ -59,7 +57,6 @@ def calculate_category_totals():
         stats = {}
         
         # 從第 2 行開始讀 (跳過標題)
-        # 假設欄位順序是: [日期, 分類, 項目, 金額] -> index 0, 1, 2, 3
         for row in rows[1:]:
             try:
                 # 防呆：確保該行有足夠欄位
@@ -83,8 +80,6 @@ def calculate_category_totals():
 
     except Exception as e:
         return None, f"❌ 讀取錯誤: {str(e)}"
-    
-# === 以下是新增的預算管理功能 ===
 
 def get_daily_budget():
     """從 Config 工作表讀取每日預算"""
@@ -119,7 +114,7 @@ def set_daily_budget(new_budget):
         try:
             config_sheet = client.open(SHEET_NAME).worksheet("Config")
         except:
-            # 如果沒有 Config 分頁，就建立一個 (這行通常需要權限，建議手動建好比較保險)
+            # 如果沒有 Config 分頁，就建立一個
             return "❌ 請先在 Google Sheet 新增一個名為 'Config' 的分頁"
 
         # 更新 B1 儲存格
@@ -148,7 +143,6 @@ def get_today_total():
         for row in rows[1:]:
             try:
                 # row[0] 是日期時間字串 "2023-12-29 10:00:00"
-                # 我們只取前面的日期部分來比對
                 row_date = row[0].split(" ")[0] 
                 
                 if row_date == today_str:
@@ -160,4 +154,5 @@ def get_today_total():
         return total
     except Exception as e:
         print(f"計算今日總額錯誤: {e}")
+
         return 0
