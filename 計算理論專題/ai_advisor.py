@@ -15,7 +15,7 @@ def call_ncku_llm(prompt, api_key):
         "model": MODEL_NAME, 
         "prompt": prompt, 
         "stream": False, 
-        "format": "json" # 這裡預設強制 JSON，如果是一般聊天可能要拿掉或由 Prompt 控制
+        "format": "json" # 預設強制 JSON
     }
     
     try:
@@ -38,7 +38,7 @@ def extract_accounting_info(user_input, api_key):
         "醫療保健", "學習進修", "美妝服飾", "其他雜項"
     ]
     
-    # 【修改重點】在 Prompt 裡增加「口語規則」
+   
     prompt = f"""
     你是一個記帳助手。請從這句話提取「項目」、「金額」並自動判斷「分類」。
     
@@ -64,9 +64,7 @@ def extract_accounting_info(user_input, api_key):
 
 def chat_with_ai(user_input, api_key):
     """一般聊天模式"""
-    # 聊天模式通常不需要強制 JSON 格式，但在您的 API Payload 中有設定 "format": "json"
-    # 如果 API 支援純文字回傳，建議這裡可以調整 payload。
-    # 為了保險，我們這裡還是用 prompt 引導它回傳內容字串
+    # 用 prompt 引導它回傳內容字串
     prompt = f"你是一個繁體中文助手。請簡短回應：{user_input}。請直接回傳內容字串。"
     return call_ncku_llm(prompt, api_key)
 
@@ -95,4 +93,5 @@ def extract_stock_symbol(user_input, api_key):
         return data.get("stock")
     except:
         # 如果 AI 回傳格式爛掉，就當作沒抓到
+
         return None
