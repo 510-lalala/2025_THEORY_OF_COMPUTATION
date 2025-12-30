@@ -92,7 +92,8 @@ stateDiagram-v2
 ### 1. 安裝環境需求
 clone專案
 ```bash
-git clone 
+git clone https://github.com/510-lalala/2025_THEORY_OF_COMPUTATION.git
+cd 2025_THEORY_OF_COMPUTATION
 ```
 請確保您的 Python 環境已安裝以下必要套件：
 ```bash
